@@ -10,7 +10,8 @@ typedef struct obj_s
 {
     DWORD             cVertex;
     DWORD             cFace;
-    float*            vtx; // vX,vY,vZ, nX,nY,nZ, u,v
+    //float*            vtx; // vX,vY,vZ, nX,nY,nZ, u,v
+    float*            vtx; // vX,vY,vZ, bright
     DWORD*            face;
 } obj_t;
 
@@ -73,7 +74,7 @@ obj_t& ObjRead(const char* fName)
        
     fp = fopen(fName,"r");
 
-	float* vv = new float[countVertex*3];
+	float* vv = new float[countVertex*4];
 
     while(!feof(fp))
 	{
@@ -83,9 +84,10 @@ obj_t& ObjRead(const char* fName)
 			float a,b,c;
             sscanf((buffer+1),"%f%f%f",&a,&b,&c);
 	
-            vv[ vc * 3 + 0 ]=a;
-			vv[ vc * 3 + 1 ]=b;
-    		vv[ vc * 3 + 2 ]=c;
+            vv[ vc * 4 + 0 ]=a;
+			vv[ vc * 4 + 1 ]=b;
+    		vv[ vc * 4 + 2 ]=c;
+            vv[ vc * 4 + 3 ]=(rand() % 100)/99.9999;// rand[0-1]
 
 			++vc;
 		}
