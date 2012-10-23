@@ -61,7 +61,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies=" OpenGL32.Lib  gdi32.lib user32.lib glew32.lib"
+				AdditionalDependencies=" OpenGL32.Lib  gdi32.lib user32.lib glew32.lib winmm.lib"
 				OutputFile="$(OutDir)\$(ProjectName)1.exe"
 				LinkIncremental="2"
 				GenerateDebugInformation="true"

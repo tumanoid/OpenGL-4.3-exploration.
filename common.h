@@ -13,6 +13,11 @@
 #include	<stdio.h>
 #include	<stdlib.h>
 #include	<string>
+#include	<vector>
+
+// for FPS
+#include	<time.h>
+#include    <mmsystem.h>
 
 using namespace  std;
 

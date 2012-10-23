@@ -22,6 +22,6 @@ void GLWindowDestroy();
 
 void GLWindowSetSize(int width, int height, bool fullScreen = false);
 
-int GLWindowMainLoop();
+long GLWindowMainLoop();
 
 #endif /* GLWINDOW_H */

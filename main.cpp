@@ -3,6 +3,8 @@
 //-----------------------------------
 #include "GLWindow.h"
 
+
+
 int main()
 {
 	int      result;
@@ -10,14 +12,20 @@ int main()
 	if (!GLWindowCreate("lesson01", 640, 480, false))
 		return 1;
 	
-     //GLenum glErr = glGetError();
-     //if (glErr!=GL_NO_ERROR) printf("GLWindowCreate GL error: %X", glErr);
+     GLint max_patchv = glGetError();
+     glGetIntegerv(GL_MAX_PATCH_VERTICES,&max_patchv);
+     printf("GL_MAX_PATCH_VERTICES %i\n",  max_patchv);
      
-     result = GLWindowMainLoop();
+     time_t startTime = time(NULL);
+     long totalFrame(0);
+     
+     totalFrame = GLWindowMainLoop();
+     
+     printf("Average FPS %f\n", totalFrame/(0.00001+(time(NULL)-startTime)));
+	
+    GLWindowDestroy();
 
-	GLWindowDestroy();
-
-	return result;
+	return 0;
 
 
 }

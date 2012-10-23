@@ -35,7 +35,10 @@ obj_t& ObjRead(const char* fName)
     fp = fopen(fName,"r");
     
     if(!fp)
+    {
+        printf("ERROR: file %s not found\n", fName);
         return tmpObj;
+    }
 
     while(!feof(fp))
 	{

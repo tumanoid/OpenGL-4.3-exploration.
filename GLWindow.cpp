@@ -307,10 +307,13 @@ void GLWindowSetSize(int width, int height, bool fullScreen)
 	//OPENGL_CHECK_FOR_ERRORS();
 }
 
-int GLWindowMainLoop()
+long totalFrame(0);
+
+long GLWindowMainLoop()
 {
 	MSG msg;
-
+        
+    DWORD oldTime = timeGetTime();
 	// основной цикл окна
 	g_window.running = g_window.active = true;
 
@@ -331,22 +334,33 @@ int GLWindowMainLoop()
 		// если окно в рабочем режиме и активно
 		if (g_window.running && g_window.active)
 		{
-           
             Render();
-
-			SwapBuffers(g_hDC);
+            //glFinish();
+            
+            totalFrame++;    
+            //SwapBuffers(g_hDC);   
+           
+            if (( timeGetTime() - oldTime)>((1000)*1/59))
+            {  
+                oldTime = timeGetTime();
+                SwapBuffers(g_hDC);   
+            }
 		}
 
 		Sleep(0);
+        
 	}
 
 	g_window.running = g_window.active = false;
-	return 0;
+	
+    return totalFrame;
+    //return 0;
 }
 
 LRESULT CALLBACK GLWindowProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
-	switch (msg)
+
+    switch (msg)
 	{
 		case WM_KEYDOWN:
 			if (wParam == VK_ESCAPE)
