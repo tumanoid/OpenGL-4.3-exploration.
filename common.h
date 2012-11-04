@@ -1,12 +1,14 @@
 #ifndef COMMON_H
 #define COMMON_H
 
+#define XRES 1280
+#define YRES 1024
+#define ASPECT (float)XRES/YRES
+
 #define  _CRT_SECURE_NO_WARNINGS
 
 #include	<windows.h>
 
-
-//#include	<gl/glcorearb.h>
 #include	<gl/glew.h>
 #include	<gl/wglew.h>
 
@@ -14,6 +16,10 @@
 #include	<stdlib.h>
 #include	<string>
 #include	<vector>
+
+// NVidia math library
+#include <nvMath.h>
+using namespace  nv;
 
 // for FPS
 #include	<time.h>
@@ -45,7 +51,7 @@ private:
     ReadSrcFile(){}
 
 public:
-    ReadSrcFile(char* fName):buff(0), charCount(0)
+    ReadSrcFile(char* fName):buff(NULL), charCount(0)
     {
       FILE* f;
       f = fopen(fName,"r");
@@ -64,9 +70,9 @@ public:
       fread(buff, 1, charCount, f);
       fclose(f);
     }
-    ~ReadSrcFile() { printf(">>>>>del buff\n"); delete[] buff; }
+    ~ReadSrcFile() { delete[] buff; }
 
-    char const * GetSrc() { /*printf(">SHADER\n%s\n>ENDSHADER\n",buff); */return buff; }
+    char const * GetSrc() { return buff; }
     int   GetLength() { return charCount; }
 
     char* buff;
@@ -77,3 +83,9 @@ private:
 
 
 #endif//COMMON_H
+
+/*
+DWORD wait_GetInput(0), delta_GetInput(1);
+if ( (timeGetTime() - wait_GetInput)< delta_GetInput ) return;
+wait_GetInput = timeGetTime();
+*/

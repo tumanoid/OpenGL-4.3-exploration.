@@ -5,13 +5,14 @@ layout(location = 1) in float Bright;
 
 layout(location = 0) out vec4 pos;
 layout(location = 1) out float vb;
+layout(location = 8) out float colorOffset;
 
 uniform float dy;
 
 void main()
 {
   float Y = Position.y + sin( (Position.x + dy)*5)/2;
-	
+  colorOffset = dy;
   gl_Position = vec4(Position.x, Y ,Position.z,1.0);
   
   pos = vec4(Position.x, Y ,Position.z,1.0);

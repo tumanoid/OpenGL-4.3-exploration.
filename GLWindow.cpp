@@ -1,7 +1,8 @@
 #define WIN32_LEAN_AND_MEAN 1
+
 #include "GLWindow.h"
 
-#include "render.h"
+#include "game.hpp"
 
 const char GLWINDOW_CLASS_NAME[] = "GLWindow_class";
 
@@ -27,8 +28,6 @@ bool GLWindowCreate(const char *title, int width, int height, bool fullScreen)
 	// обнуляем стейт окна
 	memset(&g_window, 0, sizeof(g_window));
 
-	// определим указатель на функцию создания расширенного контекста OpenGL
-	// PFNWGLCREATECONTEXTATTRIBSARBPROC wglCreateContextAttribsARB = NULL;
 
 	// укажем атрибуты для создания расширенного контекста OpenGL
 	int attribs[] =
@@ -129,11 +128,6 @@ bool GLWindowCreate(const char *title, int width, int height, bool fullScreen)
     fprintf(stdout, "Status: Using GLEW %s\n", glewGetString(GLEW_VERSION));
 
 
-
-	// получим адрес функции установки атрибутов контекста рендеринга
-	//wglCreateContextAttribsARB = reinterpret_cast<PFNWGLCREATECONTEXTATTRIBSARBPROC>(
-	//	wglGetProcAddress("wglCreateContextAttribsARB"));
-
 	// временный контекст OpenGL нам больше не нужен
 	wglMakeCurrent(NULL, NULL);
 	wglDeleteContext(hRCTemp);
@@ -151,26 +145,12 @@ bool GLWindowCreate(const char *title, int width, int height, bool fullScreen)
 		
 		return false;
 	}
-    //glewInit();
 
 	// выведем в лог немного информации о контексте OpenGL
 	int major, minor;
 	glGetIntegerv(GL_MAJOR_VERSION, &major);
 	glGetIntegerv(GL_MINOR_VERSION, &minor);
-/*
-	LOG_DEBUG("OpenGL render context information:\n"
-		"  Renderer       : %s\n"
-		"  Vendor         : %s\n"
-		"  Version        : %s\n"
-		"  GLSL version   : %s\n"
-		"  OpenGL version : %d.%d\n",
-		(const char*)glGetString(GL_RENDERER),
-		(const char*)glGetString(GL_VENDOR),
-		(const char*)glGetString(GL_VERSION),
-		(const char*)glGetString(GL_SHADING_LANGUAGE_VERSION),
-		major, minor
-	);
-*/
+
 	// зададим размеры окна
 	GLWindowSetSize(width, height, fullScreen);
 
@@ -311,11 +291,20 @@ long totalFrame(0);
 
 long GLWindowMainLoop()
 {
-	MSG msg;
+	printf("Main loop start\n");
+    MSG msg;
         
     DWORD oldTime = timeGetTime();
+    SetCursorPos (X_CENTER, Y_CENTER);
+
 	// основной цикл окна
 	g_window.running = g_window.active = true;
+
+    // Disable vertSync
+    wglSwapIntervalEXT(0);
+    
+    // FIXIT
+    game::Init();
 
 	while (g_window.running)
 	{
@@ -334,14 +323,13 @@ long GLWindowMainLoop()
 		// если окно в рабочем режиме и активно
 		if (g_window.running && g_window.active)
 		{
-            Render();
-            //glFinish();
-            
-            totalFrame++;    
-            //SwapBuffers(g_hDC);   
-           
-            if (( timeGetTime() - oldTime)>((1000)*1/59))
+
+            totalFrame++;
+ 
+            //if ( (timeGetTime() - oldTime) > 0 )
             {  
+                game::Update();                
+            
                 oldTime = timeGetTime();
                 SwapBuffers(g_hDC);   
             }
@@ -362,13 +350,21 @@ LRESULT CALLBACK GLWindowProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 
     switch (msg)
 	{
-		case WM_KEYDOWN:
-			if (wParam == VK_ESCAPE)
+		
+        case WM_KEYDOWN:
+			
+            input::KeyEvent(lParam, true);
+
+            if (wParam == VK_ESCAPE)
 				g_window.running = false;
 
 			if (wParam == VK_F1)
 				GLWindowSetSize(g_window.width, g_window.height, !g_window.fullScreen);
 
+			return FALSE;
+	    
+        case WM_KEYUP:
+		    input::KeyEvent(lParam, false);
 			return FALSE;
 
 		case WM_SETFOCUS:
@@ -402,7 +398,7 @@ LRESULT CALLBACK GLWindowProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 		case WM_ERASEBKGND:
 			return FALSE;
 	}
-
+    
 	return DefWindowProc(hWnd, msg, wParam, lParam);
 }
 

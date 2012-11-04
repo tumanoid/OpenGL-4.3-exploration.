@@ -1,29 +1,26 @@
 //-----------------------------------
-// OpenGL 3.x context creator
+// OpenGL 4.x context creator
 //-----------------------------------
 #include "GLWindow.h"
 
-
-
 int main()
 {
-	int      result;
-
-	if (!GLWindowCreate("lesson01", 640, 480, false))
+	
+	if (!GLWindowCreate("Space Fermanium", XRES, YRES, false))
 		return 1;
 	
-     GLint max_patchv = glGetError();
-     glGetIntegerv(GL_MAX_PATCH_VERTICES,&max_patchv);
-     printf("GL_MAX_PATCH_VERTICES %i\n",  max_patchv);
+     GLint varLog = glGetError();
      
-     time_t startTime = time(NULL);
-     long totalFrame(0);
+     glGetIntegerv(GL_MAX_PATCH_VERTICES,&varLog);
+     printf("GL_MAX_PATCH_VERTICES %i\n",  varLog);
      
-     totalFrame = GLWindowMainLoop();
+     glGetIntegerv(GL_MAX_GEOMETRY_OUTPUT_VERTICES,&varLog);
+     printf("MAX_GEOMETRY_OUTPUT_VERTICES %i\n",  varLog);
      
-     printf("Average FPS %f\n", totalFrame/(0.00001+(time(NULL)-startTime)));
-	
-    GLWindowDestroy();
+
+     GLWindowMainLoop();
+     
+     GLWindowDestroy();
 
 	return 0;
 

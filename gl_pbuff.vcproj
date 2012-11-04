@@ -41,6 +41,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
+				AdditionalIncludeDirectories="&quot;d:\Cpp\EXTERNAL_LIBS\NVidia&quot;"
 				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -97,7 +98,7 @@
 			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
 			IntermediateDirectory="$(ConfigurationName)"
 			ConfigurationType="1"
-			CharacterSet="1"
+			CharacterSet="0"
 			WholeProgramOptimization="1"
 			>
 			<Tool
@@ -117,6 +118,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
+				AdditionalIncludeDirectories="&quot;d:\Cpp\EXTERNAL_LIBS\NVidia&quot;"
 				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE"
 				RuntimeLibrary="2"
 				UsePrecompiledHeader="0"
@@ -135,6 +137,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
+				AdditionalDependencies=" OpenGL32.Lib  gdi32.lib user32.lib glew32.lib winmm.lib"
 				LinkIncremental="1"
 				GenerateDebugInformation="true"
 				SubSystem="1"
@@ -194,7 +197,15 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
+				RelativePath=".\camera.hpp"
+				>
+			</File>
+			<File
 				RelativePath=".\common.h"
+				>
+			</File>
+			<File
+				RelativePath=".\game.hpp"
 				>
 			</File>
 			<File
@@ -202,11 +213,27 @@
 				>
 			</File>
 			<File
+				RelativePath=".\input.hpp"
+				>
+			</File>
+			<File
 				RelativePath=".\obj_reader.h"
 				>
 			</File>
 			<File
-				RelativePath=".\render.h"
+				RelativePath=".\RenderMesh.hpp"
+				>
+			</File>
+			<File
+				RelativePath=".\RenderPoint.h"
+				>
+			</File>
+			<File
+				RelativePath=".\RenderTetra.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Scene.hpp"
 				>
 			</File>
 		</Filter>
@@ -215,6 +242,18 @@
 			Filter="rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav"
 			UniqueIdentifier="{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}"
 			>
+			<File
+				RelativePath="..\debug\fst_pnt.frag"
+				>
+			</File>
+			<File
+				RelativePath="..\debug\fst_pnt.geom"
+				>
+			</File>
+			<File
+				RelativePath="..\debug\fst_pnt.vert"
+				>
+			</File>
 		</Filter>
 	</Files>
 	<Globals>
